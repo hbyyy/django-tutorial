@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-# print("config입니다")
+# print("config입니")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
