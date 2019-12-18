@@ -13,6 +13,9 @@
     {% for choice in question.choice_set.all %}
         <li>{{ choice.choice_text }} : {{ choice.votes }}</li>
     {% endfor %}
+
+    <a href="{% url 'polls:index' %}">돌아가기</a>
+    <a href="{% url 'polls:detail' question_id=question.pk %}">다시 투표하기</a>
 </ul>
 </body>
 </html>

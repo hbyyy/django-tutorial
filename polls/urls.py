@@ -1,11 +1,11 @@
 from django.urls import path
 
-from polls.views import index, detail, results, vote
+from .views import index, detail, results, vote
 
 
 app_name = 'polls'
 
-print("polls입니다")
+# print("polls입니다")
 urlpatterns = [
     path('', index, name='index'),
     path('<int:question_id>/', detail, name='detail'),

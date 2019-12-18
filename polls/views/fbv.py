@@ -2,17 +2,18 @@ from django.http import HttpResponse, Http404
 # Create your views here.
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
+from django.utils.datastructures import MultiValueDictKeyError
 
-from polls.models import Question, Choice
+from ..models import Question, Choice
 
 
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     output = ", ".join([q.question_text for q in latest_question_list])
-    template = loader.get_template('polls/index.html')
     context = {
         'latest_question_list': latest_question_list
     }
+    template = loader.get_template('polls/index.html')
     return HttpResponse(template.render(context, request))
 
 
@@ -45,12 +46,16 @@ def vote(request, question_id):
 
     # 이후 특정 Question에 해당하는 results 페이지로 이동
     if request.method == 'POST':
+
         # GET으로 전달된 question_id에 해당하는 Question객체
-        question = get_object_or_404(Question, pk=question_id)
-        choice_pk = request.POST['choice']
+        try:
+            question = get_object_or_404(Question, pk=question_id)
+            choice_pk = request.POST['choice']
+        except MultiValueDictKeyError:
+            return redirect('polls:detail', question_id=question_id)
+
         choice = get_object_or_404(Choice, pk=choice_pk)
         choice.votes += 1
         choice.save()
         return redirect('polls:results', question_id=question_id)
-
     # return HttpResponse(f"You're voting on question {question_id}")
