@@ -16,9 +16,9 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def detail(request, pk):
+def detail(request, question_id):
     try:
-        question = Question.objects.get(pk=pk)
+        question = Question.objects.get(pk=question_id)
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
     context = {
